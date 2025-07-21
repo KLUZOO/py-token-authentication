@@ -10,8 +10,6 @@ from rest_framework.response import Response
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 from cinema.permissions import (
     IsAdminOrIfAuthenticatedReadOnly,
-    IsAdminALLOrIfAuthenticatedReadOnly,
-    IsAuthenticatedReadOrCreate,
 )
 
 from cinema.serializers import (
@@ -124,7 +122,7 @@ class MovieSessionViewSet(mixins.CreateModelMixin,
     )
     serializer_class = MovieSessionSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAdminALLOrIfAuthenticatedReadOnly,)
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
     def get_queryset(self):
         date = self.request.query_params.get("date")
@@ -165,7 +163,7 @@ class OrderViewSet(mixins.CreateModelMixin,
     serializer_class = OrderSerializer
     pagination_class = OrderPagination
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedReadOrCreate,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)

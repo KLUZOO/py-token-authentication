@@ -6,24 +6,6 @@ class IsAdminOrIfAuthenticatedReadOnly(BasePermission):
         return bool((request.method in SAFE_METHODS
                      and request.user
                      and request.user.is_authenticated)
-                    or (request.method in ("GET", "HEAD", "OPTIONS", "POST")
-                        and request.user
-                        and request.user.is_staff)
-                    )
-
-
-class IsAdminALLOrIfAuthenticatedReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        return bool((request.method in SAFE_METHODS
-                     and request.user
-                     and request.user.is_authenticated)
                     or (request.user
                         and request.user.is_staff)
                     )
-
-
-class IsAuthenticatedReadOrCreate(BasePermission):
-    def has_permission(self, request, view):
-        return bool(request.method in ("GET", "HEAD", "OPTIONS", "POST")
-                    and request.user
-                    and request.user.is_authenticated)
